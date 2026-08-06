@@ -1,18 +1,18 @@
-# HONEST TELEMETRY PIPELINE
-# Every push: build → measure real first-load JS → run Lighthouse against
-# the real production build → commit the measurements to telemetry/.
-# The site reads these files; nothing on it is hand-typed.
-# paths-ignore prevents the telemetry commit from re-triggering the run.
+
 name: telemetry
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - "telemetry/**"
+      - "sumit-portfolio/telemetry/**"
 
 permissions:
   contents: write
+
+defaults:
+  run:
+    working-directory: sumit-portfolio
 
 jobs:
   measure:
@@ -24,6 +24,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: sumit-portfolio/package-lock.json
 
       - run: npm ci
 
