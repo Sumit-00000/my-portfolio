@@ -1,0 +1,54 @@
+# HONEST TELEMETRY PIPELINE
+# Every push: build → measure real first-load JS → run Lighthouse against
+# the real production build → commit the measurements to telemetry/.
+# The site reads these files; nothing on it is hand-typed.
+# paths-ignore prevents the telemetry commit from re-triggering the run.
+name: telemetry
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "telemetry/**"
+
+permissions:
+  contents: write
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Measure first-load JS
+        run: node scripts/measure-first-load.mjs
+
+      - name: Lighthouse (3 runs against the built site)
+        run: |
+          npx --yes @lhci/cli@0.14.x collect \
+            --numberOfRuns=3 \
+            --start-server-command="npm run start" \
+            --url="http://localhost:3000/" \
+            --settings.preset=desktop
+
+      - name: Extract median scores
+        run: node scripts/extract-lighthouse.mjs
+
+      - name: Commit measurements
+        run: |
+          git config user.name "telemetry-bot"
+          git config user.email "actions@github.com"
+          git add telemetry/
+          git diff --cached --quiet && echo "no changes" && exit 0
+          git commit -m "chore(telemetry): measurements for ${GITHUB_SHA::7}"
+          git push

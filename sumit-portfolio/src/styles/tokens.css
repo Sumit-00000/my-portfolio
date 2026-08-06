@@ -1,0 +1,63 @@
+/* ============================================================
+   SUMIT RAWAT — ENGINEERING BRAND · DESIGN TOKENS
+   Single source of truth. Tailwind and components consume
+   these variables; nothing redefines them downstream.
+   Palette: "precision instrument" — cool neutral dark,
+   restrained blue-violet accent. (Brand doc v2 §Color)
+   ============================================================ */
+
+:root {
+  /* -- Surfaces ------------------------------------------- */
+  --bg-0: #0a0a0b;            /* base — neutral near-black    */
+  --bg-1: #111113;            /* raised surfaces, bars        */
+  --bg-2: #18181b;            /* hover / active               */
+  --line: rgba(255, 255, 255, 0.09);
+
+  /* -- Type color ----------------------------------------- */
+  --text-hi: #ededef;
+  --text-mid: #9e9ea7;
+  --text-low: #7b7b85;   /* AA: 4.73:1 on bg-0, 4.50:1 on bg-1 (audited) */
+
+  /* -- Accent (≤1 element per viewport) -------------------- */
+  --accent: #5e8bff;
+  --accent-2: #8a7bff;
+  --accent-dim: rgba(94, 139, 255, 0.16);
+  --ok: #4cc38a;              /* telemetry "operational" ONLY */
+
+  /* -- Typefaces ------------------------------------------ */
+  --font-display: "Archivo Variable", system-ui, sans-serif;
+  --font-body: "Instrument Sans Variable", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+
+  /* -- Fluid type scale (brand doc v2 §Typography) --------- */
+  --fs-display-xl: clamp(3rem, 7.5vw, 7.5rem);
+  --fs-display: clamp(2.25rem, 5vw, 4.5rem);
+  --fs-heading: clamp(1.5rem, 2.5vw, 2rem);
+  --fs-body-lg: 1.125rem;
+  --fs-body: 1rem;
+  --fs-mono-label: 0.8125rem;
+  --fs-mono-micro: 0.75rem;
+
+  --lh-display: 0.98;
+  --lh-body: 1.65;
+  --ls-display: -0.035em;
+  --ls-mono: 0.08em;
+
+  /* -- Space (4px base) ------------------------------------ */
+  --section-y: clamp(6rem, 12vw, 10rem);
+  --w-content: 75rem;         /* 1200px */
+  --w-measure: 65ch;
+
+  /* -- Motion: nothing moves unless it reports state ------- */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --dur-micro-in: 100ms;
+  --dur-micro-out: 250ms;
+  --dur-reveal: 600ms;
+
+  /* -- Chrome ---------------------------------------------- */
+  --telemetry-h: 2.25rem;     /* 36px */
+  --nav-h: 4rem;              /* 64px */
+  --radius-card: 8px;
+  --radius-chip: 2px;
+}

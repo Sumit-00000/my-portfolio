@@ -1,0 +1,162 @@
+@import "@fontsource-variable/archivo";
+@import "@fontsource-variable/instrument-sans";
+@import "@fontsource-variable/jetbrains-mono";
+@import "../styles/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Base ------------------------------------------------ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-0);
+  color: var(--text-mid);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  /* Content never hides behind the fixed telemetry bar */
+  padding-bottom: var(--telemetry-h);
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--text-hi);
+}
+
+/* ---- Type roles ------------------------------------------ */
+.type-display-xl {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-xl);
+  font-weight: 620;
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  color: var(--text-hi);
+  text-wrap: balance;
+}
+
+.type-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--text-hi);
+  text-wrap: balance;
+}
+
+.type-mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-label);
+  letter-spacing: var(--ls-mono);
+  text-transform: uppercase;
+  color: var(--text-low);
+}
+
+/* ---- A11y floor (non-negotiable, baked in at the shell) --- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-chip);
+}
+
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: var(--bg-2);
+  color: var(--text-hi);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-label);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-chip);
+  transition: top 150ms var(--ease-settle);
+}
+.skip-link:focus-visible {
+  top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Telemetry ------------------------------------------- */
+@keyframes pulse-ok {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.dot-ok {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  animation: pulse-ok 2.4s ease-in-out infinite; /* the ONE ambient animation: reports live state */
+}
+
+/* ---- Reveal (fires once; reports "content now available") -- */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity var(--dur-reveal) var(--ease-settle),
+    transform var(--dur-reveal) var(--ease-settle);
+}
+.reveal.reveal-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Self-drawing architecture diagrams -------------------- */
+.arch .arch-edge {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 900ms var(--ease-settle);
+}
+.arch.in .arch-edge {
+  stroke-dashoffset: 0;
+}
+.arch .arch-node {
+  opacity: 0;
+  transition: opacity 500ms var(--ease-settle);
+}
+.arch.in .arch-node {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transform: none; }
+  .arch .arch-edge { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .arch .arch-node { opacity: 1; }
+}
+
+/* ---- Print (/resume): a clean document, not a dark screen ---- */
+@media print {
+  .no-print { display: none !important; }
+  body {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding-bottom: 0;
+  }
+  .resume-root { padding-top: 0 !important; max-width: 100% !important; }
+  .resume-root .text-text-hi { color: #111 !important; }
+  .resume-root .text-text-mid { color: #333 !important; }
+  .resume-root .text-text-low { color: #555 !important; }
+  .resume-root .type-mono-label { color: #555; }
+  .resume-root .border-line { border-color: #ddd !important; }
+  a { text-decoration: none; color: inherit; }
+}
