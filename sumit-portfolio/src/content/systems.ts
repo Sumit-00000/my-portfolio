@@ -72,7 +72,7 @@ export const systems: SystemDoc[] = [
       ],
       edges: [
         { from: "client", to: "api", label: "REST" },
-        { from: "client", to: "api", label: "Socket.IO · bi-directional", dashed: true },
+        { from: "client", to: "api", label: "Socket.IO", dashed: true },
         { from: "cfg", to: "rbac", label: "per-tenant rules" },
         { from: "api", to: "rbac", label: "resolve" },
         { from: "rbac", to: "db", label: "scoped access" },

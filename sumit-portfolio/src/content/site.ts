@@ -4,7 +4,7 @@
  */
 export const site = {
   name: "Sumit Rawat",
-  wordmark: "SR",
+  wordmark: "SUMIT RAWAT",
   role: "Full-Stack / Systems Engineer",
   headline: ["Zero critical bugs isn't luck.", "It's architecture."],
   subline:
